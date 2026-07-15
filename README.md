@@ -89,4 +89,4 @@ npm run dev
 เมื่อเซิร์ฟเวอร์ทำงานสำเร็จ สามารถเปิดดูหน้าเว็บได้ที่เบราว์เซอร์ผ่านลิงก์ [http://localhost:3000](http://localhost:3000)
 
 ---
-*Developed by College of Computing (COC)*
+*Developed by Phachayos Badklang*
