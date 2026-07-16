@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { adminDb } from '@/lib/firebase-admin';
-import fs from 'fs';
-import path from 'path';
+import { adminDb, adminStorage } from '@/lib/firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
+import { uploadToGoogleDriveScript } from '@/lib/google-drive-script';
 
 export async function POST(request) {
   try {
@@ -28,32 +28,42 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Student ID does not match this booking.' }, { status: 403 });
     }
 
-    // Save file locally (since user preferred not to use Firebase Storage due to CC requirements)
     const buffer = Buffer.from(await file.arrayBuffer());
-    const ext = file.name.split('.').pop() || 'jpg';
-    // Sanitize ext
-    const cleanExt = ext.replace(/[^a-zA-Z0-9]/g, '');
-    const filename = `${bookingId}-${Date.now()}.${cleanExt}`;
+    const ext = (file.name.split('.').pop() || 'jpg').replace(/[^a-zA-Z0-9]/g, '');
+    const filename = `${bookingId}-${Date.now()}.${ext}`;
     
-    // Ensure upload directory exists
-    const uploadDir = path.join(process.cwd(), 'public/uploads');
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
+    let publicUrl = '';
+    
+    // Check if we have an Apps Script Webhook configured for Google Drive
+    if (process.env.GOOGLE_APPS_SCRIPT_URL) {
+      const mimeType = file.type || 'image/jpeg';
+      const driveResult = await uploadToGoogleDriveScript(buffer, filename, mimeType, process.env.GOOGLE_APPS_SCRIPT_URL);
+      publicUrl = driveResult.directLink;
+    } else {
+      // Fallback to Firebase Storage
+      const fileRef = adminStorage.bucket().file(`reports/${filename}`);
+      await fileRef.save(buffer, {
+        metadata: { contentType: file.type || 'image/jpeg' },
+      });
+      await fileRef.makePublic();
+      publicUrl = `https://storage.googleapis.com/${adminStorage.bucket().name}/reports/${filename}`;
     }
-
-    const filepath = path.join(uploadDir, filename);
-    fs.writeFileSync(filepath, buffer);
 
     // Update database
     await bookingRef.update({
-      postUsageImage: `/uploads/${filename}`,
+      postUsageImage: publicUrl,
       status: 'COMPLETED',
-      updatedAt: adminDb.firestore.FieldValue.serverTimestamp() || new Date()
+      updatedAt: Timestamp.now(),
     });
 
-    return NextResponse.json({ success: true, message: 'Report submitted successfully.' }, { status: 200 });
+    return NextResponse.json({
+      success: true,
+      message: 'Report submitted successfully.',
+      imageUrl: publicUrl,
+    }, { status: 200 });
 
   } catch (error) {
+    console.error('Report upload error:', error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

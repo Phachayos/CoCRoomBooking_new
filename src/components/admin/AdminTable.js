@@ -4,6 +4,8 @@ import { useLanguage } from "../../providers/LanguageProvider";
 import Skeleton from "../ui/Skeleton";
 import styles from "../../app/admin/admin.module.css";
 
+import MonthPicker from "./MonthPicker";
+
 export default function AdminTable({ 
   bookings, 
   loading, 
@@ -29,16 +31,9 @@ export default function AdminTable({
       {/* Admin Controls: Month Filter and Excel Export */}
       {!loading && (
         <div className="admin-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-          <div className="month-filter" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <label htmlFor="month-select" className="label" style={{ marginBottom: 0 }}>เลือกเดือน:</label>
-            <input 
-              id="month-select"
-              type="month" 
-              className="input-field" 
-              style={{ width: 'auto', marginTop: 0 }}
-              value={selectedMonth} 
-              onChange={(e) => setSelectedMonth(e.target.value)} 
-            />
+          <div className="month-filter" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <label htmlFor="month-select" className="label" style={{ marginBottom: 0, fontWeight: 600 }}>เลือกเดือน:</label>
+            <MonthPicker value={selectedMonth} onChange={setSelectedMonth} />
           </div>
           <button className="btn btn-primary" onClick={() => onExport(filteredBookings)} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">

@@ -58,6 +58,18 @@
   filter: none !important;
 }
 
+.selected-date-display {
+  margin-top: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: var(--primary-light);
+  border: 1px solid var(--primary);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--primary);
+  animation: slideDown 0.3s ease-out;
+}
+
 .error-message {
   background-color: var(--danger-light);
   color: var(--danger);

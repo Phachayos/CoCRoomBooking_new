@@ -1,0 +1,176 @@
+.calendar {
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+/* ===== Header with Month Navigation ===== */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0 0.25rem;
+}
+
+.monthYear {
+  font-size: 1.05rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+}
+
+.navBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-main);
+  color: var(--text-main);
+  font-size: 1.4rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.navBtn:hover:not(:disabled) {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+.navBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ===== Day Name Headers ===== */
+.dayNames {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.dayName {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  padding: 0.4rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dayName.weekend {
+  color: var(--secondary-accent);
+  opacity: 0.7;
+}
+
+/* ===== Day Grid ===== */
+.dayGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.dayCell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+  background: transparent;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+}
+
+.dayCell:hover:not(:disabled):not(.selectedDay) {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  transform: scale(1.08);
+  color: var(--primary);
+}
+
+.dayCell:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+/* Other month (faded) */
+.otherMonth {
+  color: var(--text-muted);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Past day */
+.pastDay {
+  color: var(--text-muted);
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Selected day */
+.selectedDay {
+  background: linear-gradient(135deg, var(--primary), var(--accent)) !important;
+  color: white !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 15px var(--primary-glow);
+  transform: scale(1.1);
+  font-weight: 800;
+}
+
+.selectedDay .todayDot {
+  background: white !important;
+}
+
+/* Today marker */
+.todayDay {
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 800;
+  background: var(--primary-light);
+}
+
+.todayDot {
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .calendar {
+    padding: 1rem 0.75rem;
+  }
+
+  .dayCell {
+    font-size: 0.8rem;
+  }
+
+  .monthYear {
+    font-size: 0.95rem;
+  }
+}

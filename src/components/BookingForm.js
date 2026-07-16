@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLanguage } from "../providers/LanguageProvider";
+import CalendarPicker from "./CalendarPicker";
 import styles from "../app/book/book.module.css";
 
 export default function BookingForm({ onSuccess }) {
@@ -23,6 +24,10 @@ export default function BookingForm({ onSuccess }) {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleDateChange = (dateStr) => {
+    setFormData({ ...formData, date: dateStr });
   };
 
   const handleSubmit = async (e) => {
@@ -104,9 +109,20 @@ export default function BookingForm({ onSuccess }) {
           <input type="text" name="reason" className="input-field" value={formData.reason} onChange={handleChange} required placeholder={t("phReason")} />
         </div>
 
+        {/* Calendar Date Picker */}
         <div className="form-group">
-          <label className="label">วันที่จอง / Date</label>
-          <input type="date" name="date" className="input-field" value={formData.date} onChange={handleChange} required />
+          <label className="label">{t("lblDate")}</label>
+          <CalendarPicker value={formData.date} onChange={handleDateChange} />
+          {formData.date && (
+            <div className={styles['selected-date-display']}>
+              📅 {new Date(formData.date + "T00:00:00").toLocaleDateString(
+                formData.date ? "th-TH" : "en-US",
+                { weekday: "long", year: "numeric", month: "long", day: "numeric", timeZone: "Asia/Bangkok" }
+              )}
+            </div>
+          )}
+          {/* Hidden required input to enforce date selection */}
+          <input type="hidden" name="date" value={formData.date} required />
         </div>
 
         <div className={styles['form-row']}>
@@ -132,7 +148,7 @@ export default function BookingForm({ onSuccess }) {
           </div>
         </div>
 
-        <button type="submit" className={`btn btn-primary ${styles['submit-btn']}`} disabled={loading}>
+        <button type="submit" className={`btn btn-primary ${styles['submit-btn']}`} disabled={loading || !formData.date}>
           {loading ? t("btnProcessing") : t("btnConfirm")}
         </button>
       </form>

@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 export async function POST(request) {
   try {
@@ -31,7 +32,7 @@ export async function POST(request) {
     // Update status to CANCELLED
     await bookingRef.update({ 
       status: 'CANCELLED',
-      updatedAt: adminDb.firestore.FieldValue.serverTimestamp() || new Date()
+      updatedAt: Timestamp.now()
     });
 
     return NextResponse.json({ success: true, message: 'Booking cancelled successfully.' }, { status: 200 });

@@ -15,6 +15,9 @@ export const translations = {
     btnReport: "Report Usage",
     scheduleTitle: "Today's Schedule",
     loadingSchedule: "Loading schedule...",
+    slotAvailable: "Available",
+    slotBooked: "Booked",
+    slotPast: "Past",
     
     // Book Form
     bookTitle: "Book CoC Meeting Room",
@@ -26,6 +29,7 @@ export const translations = {
     lblEmail: "Email",
     lblPhone: "Phone Number",
     lblReason: "Reason for Booking",
+    lblDate: "Select Date",
     lblStart: "Start Time",
     lblEnd: "End Time",
     btnConfirm: "Confirm Booking",
@@ -92,6 +96,9 @@ export const translations = {
     btnReport: "รายงานการใช้งาน",
     scheduleTitle: "ตารางเวลาวันนี้",
     loadingSchedule: "กำลังโหลดตารางเวลา...",
+    slotAvailable: "ว่าง",
+    slotBooked: "จองแล้ว",
+    slotPast: "ผ่านไปแล้ว",
     
     // Book Form
     bookTitle: "จองห้อง CoC Meeting Room",
@@ -103,6 +110,7 @@ export const translations = {
     lblEmail: "อีเมล",
     lblPhone: "เบอร์โทรศัพท์",
     lblReason: "จุดประสงค์การจอง",
+    lblDate: "เลือกวันที่",
     lblStart: "เวลาเริ่ม",
     lblEnd: "เวลาสิ้นสุด",
     btnConfirm: "ยืนยันการจอง",
